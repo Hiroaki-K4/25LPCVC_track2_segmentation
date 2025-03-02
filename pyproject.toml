@@ -1,0 +1,32 @@
+[project]
+name = "25lpcvc-track2-segmentation-sample-solution"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10.8"
+dependencies = [
+    "einops>=0.8.1",
+    "kornia>=0.8.0",
+    "matplotlib>=3.10.0",
+    "mpi4py>=4.0.3",
+    "nltk>=3.9.1",
+    "numpy==1.26.4",
+    "onnx>=1.17.0",
+    "onnxruntime>=1.20.1",
+    "pycocotools>=2.0.8",
+    "qai-hub>=0.24.0",
+    "ruff>=0.9.7",
+    "scipy>=1.15.2",
+    "timm>=1.0.15",
+    "torch>=2.6.0",
+    "torchvision>=0.21.0",
+    "tqdm>=4.67.1",
+    "transformers>=4.49.0",
+    "wandb>=0.19.7",
+]
+
+[dependency-groups]
+dev = [
+    "jupyterlab>=4.3.5",
+    "tqdm>=4.67.1",
+]
