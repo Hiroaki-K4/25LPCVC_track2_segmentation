@@ -1,0 +1,10 @@
+# directories
+__pycache__/
+output/
+annotations/
+images/
+
+# models
+model.onnx
+model.bin
+model_state_dict.pt
