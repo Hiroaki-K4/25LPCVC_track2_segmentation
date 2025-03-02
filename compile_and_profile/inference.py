@@ -36,6 +36,10 @@ def main():
     # Inference
     onnx_path = Path("./compile_and_profile/onnx")
     output_path = onnx_path / "output"
+    numpy_path = output_path / 'numpy'
+    images_path = output_path / 'images'
+    numpy_path.mkdir(parents=True, exist_ok=True)
+    images_path.mkdir(parents=True, exist_ok=True)
     providers = ["CPUExecutionProvider"]
 
     session = onnxruntime.InferenceSession(
@@ -48,12 +52,12 @@ def main():
         }
         outputs = session.run(None, inputs)
         # save output
-        np.save(output_path / 'numpy' / f"{d['image_name'].replace(' ', '_')}_{d['annotation_id']}_{d['text'].replace(' ', '_')}.npy", outputs[0])
+        np.save(numpy_path / f"{d['image_name'].replace(' ', '_')}_{d['annotation_id']}_{d['text'].replace(' ', '_')}.npy", outputs[0])
 
         # Save visualization of model output
         plt.matshow(outputs[0])
         plt.axis("off")
-        plt.savefig(output_path / 'images' / f"{d['image_name'].replace(' ', '_')}_{d['annotation_id']}_{d['text'].replace(' ', '_')}.jpg")
+        plt.savefig(images_path / f"{d['image_name'].replace(' ', '_')}_{d['annotation_id']}_{d['text'].replace(' ', '_')}.jpg")
 
 
 if __name__ == '__main__':
