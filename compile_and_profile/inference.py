@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import onnxruntime
 from tqdm import tqdm
 
-from compile_and_profile.compile_profile_inference_aihub import prepare_data
+from compile_profile_inference_aihub import prepare_data
 from compile_and_profile.models import GroundedSAM, GroundingDino
 from segment_anything import sam_model_registry
 
@@ -50,7 +50,7 @@ def load_data(image_id: Optional[int] = None):
 
 
 def inference(data):
-    GROUNDING_DINO_CONFIG_PATH = "./Grounded-Segment-Anything//GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py"
+    GROUNDING_DINO_CONFIG_PATH = "./configs/groundingdino/GroundingDINO_SwinT_OGC.py"
     GROUNDING_DINO_CHECKPOINT_PATH = "./lpcvc_track2_models/groundingdino_swint_ogc.pth"
     grounding_dino_model = GroundingDino(model_config_path=GROUNDING_DINO_CONFIG_PATH, model_checkpoint_path=GROUNDING_DINO_CHECKPOINT_PATH)
 

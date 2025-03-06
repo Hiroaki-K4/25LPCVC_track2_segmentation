@@ -218,12 +218,14 @@ class GroundedSAM(nn.Module):
             text_threshold=TEXT_THRESHOLD
         )
         # annotate image with detections
-        box_annotator = sv.BoxAnnotator()
+        bbox_annotator = sv.BoundingBoxAnnotator()
+        label_annotator = sv.LabelAnnotator()
         labels = [
             f"{caption} {confidence:0.2f}"
             for _, _, confidence, class_id, _, _
             in detections]
-        annotated_frame = box_annotator.annotate(scene=image_cv2.copy(), detections=detections, labels=labels)
+        annotated_frame = bbox_annotator.annotate(scene=image_cv2.copy(), detections=detections)
+        annotated_frame = label_annotator.annotate(scene=annotated_frame, detections=detections, labels=labels)
         cv2.imwrite("groundingdino_annotated_image.jpg", annotated_frame)
 
         print(f"Before NMS: {len(detections.xyxy)} boxes")
@@ -259,14 +261,16 @@ class GroundedSAM(nn.Module):
             xyxy=detections.xyxy
         )
 
-        box_annotator = sv.BoxAnnotator()
+        bbox_annotator = sv.BoundingBoxAnnotator()
+        label_annotator = sv.LabelAnnotator()
         mask_annotator = sv.MaskAnnotator()
         labels = [
             f"{caption} {confidence:0.2f}"
             for _, _, confidence, class_id, _, _
             in detections]
         annotated_image = mask_annotator.annotate(scene=image_cv2.copy(), detections=detections)
-        annotated_image = box_annotator.annotate(scene=annotated_image, detections=detections, labels=labels)
+        annotated_image = bbox_annotator.annotate(scene=annotated_image, detections=detections)
+        annotated_image = label_annotator.annotate(scene=annotated_image, detections=detections, labels=labels)
         # save the annotated grounded-sam image
         cv2.imwrite("grounded_sam_annotated_image.jpg", annotated_image)
 

@@ -5,7 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10.8"
 dependencies = [
+    "detectron2",
     "einops>=0.8.1",
+    "groundingdino",
     "kornia>=0.8.0",
     "matplotlib>=3.10.0",
     "mpi4py>=4.0.3",
@@ -13,15 +15,15 @@ dependencies = [
     "numpy==1.26.4",
     "onnx>=1.17.0",
     "onnxruntime>=1.20.1",
+    "opencv-python>=4.11.0.86",
+    "opencv-python-headless>=4.11.0.86",
     "pycocotools>=2.0.8",
     "qai-hub>=0.24.0",
-    "ruff>=0.9.7",
     "scipy>=1.15.2",
-    "supervision==0.21.0",
+    "segment-anything",
     "timm>=1.0.15",
     "torch>=2.6.0",
     "torchvision>=0.21.0",
-    "tqdm>=4.67.1",
     "transformers>=4.49.0",
     "wandb>=0.19.7",
 ]
@@ -29,5 +31,11 @@ dependencies = [
 [dependency-groups]
 dev = [
     "jupyterlab>=4.3.5",
+    "ruff>=0.9.7",
     "tqdm>=4.67.1",
 ]
+
+[tool.uv.sources]
+detectron2 = { git = "https://github.com/facebookresearch/detectron2.git" }
+segment-anything = { git = "https://github.com/facebookresearch/segment-anything.git" }
+groundingdino = { git = "https://github.com/IDEA-Research/GroundingDINO.git" }
