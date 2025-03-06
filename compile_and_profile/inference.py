@@ -5,10 +5,10 @@ from typing import Optional
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+from segment_anything import sam_model_registry
 
 from compile_profile_inference_aihub import prepare_data
 from compile_and_profile.models import GroundedSAM, GroundingDino
-from segment_anything import sam_model_registry
 
 
 def main():
