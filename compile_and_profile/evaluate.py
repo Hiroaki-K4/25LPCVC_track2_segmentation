@@ -24,11 +24,13 @@ def evaluate():
 
         image_id = ann['image_id']
         file_name = coco.imgs[image_id]['file_name']
-        output_dir = Path("./compile_and_profile/onnx/output")
+        torch_output_dir = Path("./compile_and_profile/torch/output")
+        onnx_output_dir = Path("./compile_and_profile/onnx/output")
 
         texts = [v for v in ann['attributes'].values() if isinstance(v, str) and len(v) > 0]
         for text in texts:
-            np_path = output_dir / 'numpy' / f"{file_name.replace(' ', '_')}_{ann_id}_{text.replace(' ', '_')}.npy"
+            np_path = torch_output_dir / 'numpy' / f"{file_name.replace(' ', '_')}_{ann_id}_{text.replace(' ', '_')}.npy"
+            # np_path = torch_output_dir / 'numpy' / f"{file_name.replace(' ', '_')}_{ann_id}_{text.replace(' ', '_')}.npy"
             output = np.load(np_path)
             output_bool = output > 0
 
