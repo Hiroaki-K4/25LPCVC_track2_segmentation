@@ -93,7 +93,7 @@ def build_baseline_model(
 
     with torch.no_grad():
         lang_encoder.eval()
-        embeds = lang_encoder.get_text_embeddings(
+        _ = lang_encoder.get_text_embeddings(
             class_names=["background"], name="default", is_eval=True, prompt=True
         )
         # init text embeddings for pre-defined classes used for semantic-seg task; not used for ov-grounding actually.

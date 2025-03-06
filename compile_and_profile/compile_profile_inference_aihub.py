@@ -196,7 +196,7 @@ def compile_and_profile_aihub(
 
     # Profile model if requested
     if profile:
-        profile_job = hub.submit_profile_job(
+        _ = hub.submit_profile_job(
             name="lpcvc25_track2_sample_solution",
             model=model,
             device=hub.Device(deploy_device),

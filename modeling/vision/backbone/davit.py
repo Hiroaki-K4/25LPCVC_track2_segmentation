@@ -1,5 +1,4 @@
 import os
-import itertools
 import logging
 
 import torch
@@ -11,8 +10,7 @@ from collections import OrderedDict
 from einops import rearrange
 from timm.models.layers import DropPath, trunc_normal_
 
-from detectron2.utils.file_io import PathManager
-from detectron2.modeling import BACKBONE_REGISTRY, Backbone, ShapeSpec
+from detectron2.modeling import Backbone, ShapeSpec
 
 from .build import register_backbone
 

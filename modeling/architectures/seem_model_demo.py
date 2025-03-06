@@ -15,18 +15,15 @@ from kornia.contrib import distance_transform
 
 from detectron2.structures import Boxes, ImageList, Instances, BitMasks
 from detectron2.utils.memory import retry_if_cuda_oom
-from detectron2.data import MetadataCatalog
 
 from .build import register_model
 
-from ..utils import configurable, get_class_names, get_iou
+from ..utils import configurable, get_iou
 from ..vision.backbone import build_backbone, Backbone
 from ..body import build_xdecoder_head
-from ..modules import sem_seg_postprocess, SetCriterion, HungarianMatcher, bbox_postprocess
+from ..modules import sem_seg_postprocess, bbox_postprocess
 from ..language import build_language_encoder
 from ..language.loss import vl_similarity
-from utils.prompt_engineering import prompt_engineering
-from utils.constants import COCO_PANOPTIC_CLASSES
 
 
 class GeneralizedSEEM(nn.Module):

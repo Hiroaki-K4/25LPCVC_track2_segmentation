@@ -1,4 +1,4 @@
-from typing import Callable, List, Optional, Tuple
+from typing import Optional, Tuple
 
 import torch
 import torch.nn.functional as F
@@ -6,8 +6,7 @@ from torch.nn import Parameter
 from torch.nn.modules.linear import Linear
 from torch.nn.init import xavier_uniform_, constant_
 from torch.overrides import (
-    has_torch_function, has_torch_function_unary, has_torch_function_variadic,
-    handle_torch_function)
+    has_torch_function, handle_torch_function)
 
 Tensor = torch.Tensor
 

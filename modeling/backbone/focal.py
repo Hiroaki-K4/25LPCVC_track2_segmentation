@@ -4,9 +4,7 @@
 # Licensed under The MIT License [see LICENSE for details]
 # Written by Jianwei Yang
 # --------------------------------------------------------
-import math
 import time
-import numpy as np
 import logging
 import torch
 import torch.nn as nn
@@ -15,7 +13,7 @@ import torch.utils.checkpoint as checkpoint
 from timm.models.layers import DropPath, to_2tuple, trunc_normal_
 
 from detectron2.utils.file_io import PathManager
-from detectron2.modeling import BACKBONE_REGISTRY, Backbone, ShapeSpec
+from detectron2.modeling import Backbone, ShapeSpec
 
 from .registry import register_backbone
 

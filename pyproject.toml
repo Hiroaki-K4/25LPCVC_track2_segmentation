@@ -5,7 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10.8"
 dependencies = [
+    "detectron2",
     "einops>=0.8.1",
+    "groundingdino",
     "kornia>=0.8.0",
     "matplotlib>=3.10.0",
     "mpi4py>=4.0.3",
@@ -13,14 +15,15 @@ dependencies = [
     "numpy==1.26.4",
     "onnx>=1.17.0",
     "onnxruntime>=1.20.1",
+    "opencv-python>=4.11.0.86",
+    "opencv-python-headless>=4.11.0.86",
     "pycocotools>=2.0.8",
     "qai-hub>=0.24.0",
-    "ruff>=0.9.7",
     "scipy>=1.15.2",
+    "segment-anything",
     "timm>=1.0.15",
     "torch>=2.6.0",
     "torchvision>=0.21.0",
-    "tqdm>=4.67.1",
     "transformers>=4.49.0",
     "wandb>=0.19.7",
 ]
@@ -28,5 +31,94 @@ dependencies = [
 [dependency-groups]
 dev = [
     "jupyterlab>=4.3.5",
+    "ruff>=0.9.7",
     "tqdm>=4.67.1",
 ]
+
+[tool.uv.sources]
+detectron2 = { git = "https://github.com/facebookresearch/detectron2.git" }
+segment-anything = { git = "https://github.com/facebookresearch/segment-anything.git" }
+groundingdino = { git = "https://github.com/IDEA-Research/GroundingDINO.git" }
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "modeling",
+    "utils"
+]
+
+# Same as Black.
+line-length = 120
+indent-width = 4
+
+# Assume Python 3.9
+target-version = "py310"
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["E4", "E7", "E9", "F"]
+ignore = [
+    "E741"
+]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings. Markdown,
+# reStructuredText code/literal blocks and doctests are all supported.
+#
+# This is currently disabled by default, but it is planned for this
+# to be opt-out in the future.
+docstring-code-format = false
+
+# Set the line length limit used when formatting code snippets in
+# docstrings.
+#
+# This only has an effect when the `docstring-code-format` setting is
+# enabled.
+docstring-code-line-length = "dynamic"

@@ -17,11 +17,11 @@ from typing import List, Optional, Tuple, Any
 
 import torch
 import torchvision
-from torch import nn, Tensor, device
+from torch import Tensor, device
 import torch.distributed as dist
 import torch.nn.functional as F
 
-from detectron2.layers import cat, shapes_to_tensor
+from detectron2.layers import shapes_to_tensor
 
 from utils.constants import *
 
