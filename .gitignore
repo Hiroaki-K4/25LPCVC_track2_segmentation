@@ -4,7 +4,6 @@ output/
 annotations/
 images/
 configs/
-Grounded-Segment-Anything/
 lpcvc_track2_models/
 
 # models

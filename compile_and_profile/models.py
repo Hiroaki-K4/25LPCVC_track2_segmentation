@@ -11,7 +11,6 @@ from torchvision.ops import box_convert
 from transformers import CLIPTokenizer
 from segment_anything import SamPredictor
 
-import groundingdino.datasets.transforms as T
 from groundingdino.models import build_model
 from groundingdino.util.misc import clean_state_dict
 from groundingdino.util.slconfig import SLConfig
