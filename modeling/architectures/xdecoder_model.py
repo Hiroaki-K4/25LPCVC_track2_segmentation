@@ -15,7 +15,7 @@ import numpy as np
 
 from timm.models.layers import trunc_normal_
 from nltk.stem.lancaster import LancasterStemmer
-from detectron2.structures import Boxes, ImageList, Instances, BitMasks, BoxMode
+from detectron2.structures import Boxes, ImageList, Instances, BitMasks
 from detectron2.utils.memory import retry_if_cuda_oom
 from detectron2.data import MetadataCatalog
 

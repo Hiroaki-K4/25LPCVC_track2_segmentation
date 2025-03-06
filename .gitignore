@@ -3,7 +3,6 @@ __pycache__/
 output/
 annotations/
 images/
-configs/
 lpcvc_track2_models/
 
 # models

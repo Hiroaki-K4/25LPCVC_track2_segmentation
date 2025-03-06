@@ -19,16 +19,11 @@ from transformers import CLIPTokenizer
 from detectron2.structures import ImageList
 import onnxruntime
 import qai_hub as hub
+from compile_and_profile.build_baseline_model import build_baseline_model  # [Participants: Replace this section with your custom model implementation]
 
 # Set device for PyTorch operations
 device = "cuda" if torch.cuda.is_available() else "cpu"
 sys.path.append("")
-
-#######################################################################################################################
-# Model Definition Section
-"""[Participants: Replace this section with your custom model implementation]"""
-
-from compile_and_profile.build_baseline_model import build_baseline_model
 
 
 def build_model(
@@ -196,7 +191,7 @@ def compile_and_profile_aihub(
 
     # Profile model if requested
     if profile:
-        profile_job = hub.submit_profile_job(
+        _ = hub.submit_profile_job(
             name="lpcvc25_track2_sample_solution",
             model=model,
             device=hub.Device(deploy_device),

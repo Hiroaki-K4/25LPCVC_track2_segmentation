@@ -1,5 +1,4 @@
 from pathlib import Path
-import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 from pycocotools.coco import COCO
@@ -25,7 +24,7 @@ def evaluate():
         image_id = ann['image_id']
         file_name = coco.imgs[image_id]['file_name']
         torch_output_dir = Path("./compile_and_profile/torch/output")
-        onnx_output_dir = Path("./compile_and_profile/onnx/output")
+        # onnx_output_dir = Path("./compile_and_profile/onnx/output")
 
         texts = [v for v in ann['attributes'].values() if isinstance(v, str) and len(v) > 0]
         for text in texts:

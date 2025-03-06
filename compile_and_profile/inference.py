@@ -4,7 +4,6 @@ from typing import Optional
 
 import numpy as np
 import matplotlib.pyplot as plt
-import onnxruntime
 from tqdm import tqdm
 
 from compile_profile_inference_aihub import prepare_data

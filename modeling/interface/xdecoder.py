@@ -5,11 +5,9 @@
 # Written by Xueyan Zou (xueyan@cs.wisc.edu)
 # --------------------------------------------------------
 
-import logging
-from typing import Optional
 
 import torch
-from torch import nn, Tensor
+from torch import nn
 from torch.nn import functional as F
 
 from timm.models.layers import trunc_normal_

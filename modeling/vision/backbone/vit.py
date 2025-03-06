@@ -16,7 +16,7 @@ from functools import partial
 from .common import LayerNorm2d, MLPBlock
 
 from detectron2.utils.file_io import PathManager
-from detectron2.modeling import BACKBONE_REGISTRY, Backbone, ShapeSpec
+from detectron2.modeling import Backbone, ShapeSpec
 
 from .build import register_backbone
 

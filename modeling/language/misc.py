@@ -1,6 +1,5 @@
 import random
 
-import torch
 import nltk
 nltk.data.path.append('/mnt/data/nltk_data')
 import numpy as np
