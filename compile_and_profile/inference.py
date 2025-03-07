@@ -8,7 +8,7 @@ from tqdm import tqdm
 from segment_anything import sam_model_registry
 
 from compile_profile_inference_aihub import prepare_data
-from compile_and_profile.models import GroundedSAM, GroundingDino
+from models import GroundedSAM, GroundingDino
 
 
 def main():
@@ -87,14 +87,16 @@ def inference(data):
     #     plt.axis("off")
     #     plt.savefig(images_path / f"{d['image_name'].replace(' ', '_')}_{d['annotation_id']}_{d['text'].replace(' ', '_')}.jpg")
     for d in tqdm(data):
-        output = model(d['image_input'], d['text_input'])
+        unique_fp = f"{d['image_name'].replace(' ', '_')}_{d['annotation_id']}_{d['text'].replace(' ', '_')}"
+        image_save_dir = Path('./compile_and_profile') / 'annotated' / unique_fp
+        output = model(d['image_input'], d['text_input'], image_save_dir)
         # save output
-        np.save(numpy_path / f"{d['image_name'].replace(' ', '_')}_{d['annotation_id']}_{d['text'].replace(' ', '_')}.npy", output)
+        np.save(numpy_path / f"{unique_fp}.npy", output)
 
         # Save visualization of model output
         plt.matshow(output)
         plt.axis("off")
-        plt.savefig(images_path / f"{d['image_name'].replace(' ', '_')}_{d['annotation_id']}_{d['text'].replace(' ', '_')}.jpg")
+        plt.savefig(images_path / f"{unique_fp}.jpg")
 
 
 if __name__ == '__main__':

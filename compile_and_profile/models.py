@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Tuple, List
 
 import cv2
@@ -10,7 +11,6 @@ import torchvision
 from torchvision.ops import box_convert
 from transformers import CLIPTokenizer
 from segment_anything import SamPredictor
-
 from groundingdino.models import build_model
 from groundingdino.util.misc import clean_state_dict
 from groundingdino.util.slconfig import SLConfig
@@ -198,7 +198,8 @@ class GroundedSAM(nn.Module):
         tokens = {"input_ids": text_input[0], "attention_mask": text_input[1]}
         return images, tokens, image_input
 
-    def forward(self, image_input, text_input):
+    def forward(self, image_input, text_input, image_save_dir: Path = Path("./compile_and_profile/annotated")):
+        image_save_dir.mkdir(parents=True, exist_ok=True)
         images, tokens, image_input = self.pre_processing(image_input, text_input)
         image_cv2 = self.tensor_to_cv2(image_input[0])
 
@@ -226,7 +227,7 @@ class GroundedSAM(nn.Module):
             in detections]
         annotated_frame = bbox_annotator.annotate(scene=image_cv2.copy(), detections=detections)
         annotated_frame = label_annotator.annotate(scene=annotated_frame, detections=detections, labels=labels)
-        cv2.imwrite("groundingdino_annotated_image.jpg", annotated_frame)
+        cv2.imwrite(image_save_dir / "groundingdino_annotated_image.jpg", annotated_frame)
 
         print(f"Before NMS: {len(detections.xyxy)} boxes")
         # NMS post process
@@ -272,7 +273,7 @@ class GroundedSAM(nn.Module):
         annotated_image = bbox_annotator.annotate(scene=annotated_image, detections=detections)
         annotated_image = label_annotator.annotate(scene=annotated_image, detections=detections, labels=labels)
         # save the annotated grounded-sam image
-        cv2.imwrite("grounded_sam_annotated_image.jpg", annotated_image)
+        cv2.imwrite(image_save_dir / "groundedsam_annotated_image.jpg", annotated_image)
 
         mask_pred = self.post_processing(detections)
         return mask_pred
