@@ -10,3 +10,5 @@ lpcvc_track2_models/
 model.onnx
 model.bin
 model_state_dict.pt
+
+GroundingDINO/
