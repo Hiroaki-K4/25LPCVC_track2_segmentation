@@ -10,15 +10,17 @@ The script handles the complete pipeline from model conversion to deployment.
 
 import os
 import sys
-from PIL import Image
-import torch
-import numpy as np
+
 import matplotlib.pyplot as plt
-from torchvision import transforms
-from transformers import CLIPTokenizer
-from detectron2.structures import ImageList
+import numpy as np
 import onnxruntime
 import qai_hub as hub
+from detectron2.structures import ImageList
+from PIL import Image
+from torchvision import transforms
+from transformers import CLIPTokenizer
+
+import torch
 
 # Set device for PyTorch operations
 device = "cuda" if torch.cuda.is_available() else "cpu"

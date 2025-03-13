@@ -4,18 +4,18 @@ This module handles model construction, weight loading, and inference pipeline.
 """
 
 import os
-import torch
+
 import matplotlib.pyplot as plt
-import torch.nn.functional as F
 import torch.nn as nn
+import torch.nn.functional as F
 from detectron2.modeling import ShapeSpec
-
-
+from modeling.interface import build_decoder
+from modeling.language import build_language_encoder
 from modeling.vision.backbone import build_backbone
 from modeling.vision.encoder import build_encoder
-from modeling.language import build_language_encoder
-from modeling.interface import build_decoder
 from utils.arguments import load_opt_from_config_files
+
+import torch
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -43,7 +43,7 @@ def build_baseline_model(
     opt = load_opt_from_config_files([conf_file])
 
     pretrained_path = "./lpcvc_track2_models/model_state_dict.pt"
-    ckpt = torch.load(pretrained_path, map_location=torch.device('cpu'))
+    ckpt = torch.load(pretrained_path, map_location=torch.device("cpu"))
 
     # build backbone
     backbone = build_backbone(opt).to(device)

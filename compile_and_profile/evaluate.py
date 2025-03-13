@@ -1,14 +1,16 @@
 from pathlib import Path
+
 import numpy as np
+from detectron2.structures import ImageList
 from PIL import Image
 from pycocotools.coco import COCO
-import torch
 from torchvision import transforms
 from tqdm import tqdm
-from detectron2.structures import ImageList
 
-image_dir = Path('./compile_and_profile/images/default')
-annotation_path = Path('./compile_and_profile/annotations/instances_default.json')
+import torch
+
+image_dir = Path("./compile_and_profile/images/default")
+annotation_path = Path("./compile_and_profile/annotations/instances_default.json")
 coco = COCO(annotation_path)
 
 
@@ -21,14 +23,20 @@ def evaluate():
     for ann_id in tqdm(coco.anns):
         ann = coco.anns[ann_id]
 
-        image_id = ann['image_id']
-        file_name = coco.imgs[image_id]['file_name']
+        image_id = ann["image_id"]
+        file_name = coco.imgs[image_id]["file_name"]
         torch_output_dir = Path("./compile_and_profile/torch/output")
         # onnx_output_dir = Path("./compile_and_profile/onnx/output")
 
-        texts = [v for v in ann['attributes'].values() if isinstance(v, str) and len(v) > 0]
+        texts = [
+            v for v in ann["attributes"].values() if isinstance(v, str) and len(v) > 0
+        ]
         for text in texts:
-            np_path = torch_output_dir / 'numpy' / f"{file_name.replace(' ', '_')}_{ann_id}_{text.replace(' ', '_')}.npy"
+            np_path = (
+                torch_output_dir
+                / "numpy"
+                / f"{file_name.replace(' ', '_')}_{ann_id}_{text.replace(' ', '_')}.npy"
+            )
             # np_path = torch_output_dir / 'numpy' / f"{file_name.replace(' ', '_')}_{ann_id}_{text.replace(' ', '_')}.npy"
             output = np.load(np_path)
             output_bool = output > 0
