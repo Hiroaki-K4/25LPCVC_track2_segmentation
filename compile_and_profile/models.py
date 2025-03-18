@@ -11,6 +11,7 @@ import torchvision
 from torchvision.ops import box_convert
 from transformers import CLIPTokenizer
 from segment_anything import SamPredictor
+from sam2.sam2_image_predictor import SAM2ImagePredictor
 from groundingdino.models import build_model
 from groundingdino.util.misc import clean_state_dict
 from groundingdino.util.slconfig import SLConfig
@@ -144,11 +145,17 @@ class GroundingDino(nn.Module):
 
 class GroundedSAM(nn.Module):
 
-    def __init__(self, object_detection_model: GroundingDino, sam_model, device='cpu'):
+    def __init__(self, object_detection_model: GroundingDino, sam_model, sam_version=2, device='cpu'):
         super().__init__()
         self.object_detection_model = object_detection_model
         self.sam_model = sam_model
-        self.sam_predictor = SamPredictor(self.sam_model)
+        self.sam_version = sam_version
+        if self.sam_version == 2:
+            self.sam_predictor = SAM2ImagePredictor(self.sam_model)
+        elif self.sam_version == 1:
+            self.sam_predictor = SamPredictor(self.sam_model)
+        else:
+            raise NotImplementedError
         self.image_resolution = 1024
 
         self.pixel_mean = (
@@ -243,24 +250,20 @@ class GroundedSAM(nn.Module):
         print(f"After NMS: {len(detections.xyxy)} boxes")
 
         # Prompting SAM with detected boxes
-        def segment(sam_predictor: SamPredictor, image: np.ndarray, xyxy: np.ndarray) -> np.ndarray:
-            sam_predictor.set_image(image)
-            result_masks = []
-            for box in xyxy:
-                masks, scores, logits = sam_predictor.predict(
-                    box=box,
-                    multimask_output=True
-                )
-                index = np.argmax(scores)
-                result_masks.append(masks[index])
-            return np.array(result_masks)
-
         # convert detections to masks
-        detections.mask = segment(
-            sam_predictor=self.sam_predictor,
-            image=cv2.cvtColor(image_cv2, cv2.COLOR_BGR2RGB),
-            xyxy=detections.xyxy
-        )
+        self.sam_predictor.set_image(cv2.cvtColor(image_cv2, cv2.COLOR_BGR2RGB))
+        result_masks = []
+        for box in detections.xyxy:
+            masks, scores, logits = self.sam_predictor.predict(
+                box=box,
+                multimask_output=True
+            )
+            index = np.argmax(scores)
+            result_masks.append(masks[index])
+        detections.mask = np.array(result_masks)
+        if self.sam_version == 2:
+            detections.mask = detections.mask.astype(int)
+            detections.mask = detections.mask != 0
 
         bbox_annotator = sv.BoundingBoxAnnotator()
         label_annotator = sv.LabelAnnotator()
@@ -298,6 +301,3 @@ class GroundedSAM(nn.Module):
     @staticmethod
     def tensor_to_cv2(image_input: torch.Tensor):
         return cv2.cvtColor(image_input.permute(1, 2, 0).numpy().astype(dtype=np.uint8), cv2.COLOR_RGB2BGR)
-
-    def convert_to_onnx(self):
-        ...

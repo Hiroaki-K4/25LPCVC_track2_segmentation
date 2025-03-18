@@ -5,7 +5,7 @@ from pycocotools.coco import COCO
 import torch
 from torchvision import transforms
 from tqdm import tqdm
-from detectron2.structures import ImageList
+from utils import ImageList
 
 image_dir = Path('./compile_and_profile/images/default')
 annotation_path = Path('./compile_and_profile/annotations/instances_default.json')
