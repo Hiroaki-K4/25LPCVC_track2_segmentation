@@ -10,6 +10,7 @@ import torch.nn.functional as F
 import torchvision
 from torchvision.ops import box_convert
 from transformers import CLIPTokenizer
+from sam2.sam2_image_predictor import SAM2ImagePredictor
 from segment_anything import SamPredictor
 from groundingdino.models import build_model
 from groundingdino.util.misc import clean_state_dict
@@ -148,7 +149,8 @@ class GroundedSAM(nn.Module):
         super().__init__()
         self.object_detection_model = object_detection_model
         self.sam_model = sam_model
-        self.sam_predictor = SamPredictor(self.sam_model)
+        # self.sam_predictor = SamPredictor(self.sam_model)
+        self.sam_predictor = SAM2ImagePredictor(self.sam_model)
         self.image_resolution = 1024
 
         self.pixel_mean = (
@@ -261,6 +263,8 @@ class GroundedSAM(nn.Module):
             image=cv2.cvtColor(image_cv2, cv2.COLOR_BGR2RGB),
             xyxy=detections.xyxy
         )
+        detections.mask = detections.mask.astype(int)
+        detections.mask = detections.mask != 0
 
         bbox_annotator = sv.BoundingBoxAnnotator()
         label_annotator = sv.LabelAnnotator()
