@@ -6,6 +6,7 @@ import numpy as np
 import torch
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+from sam2.build_sam import build_sam2
 from segment_anything import sam_model_registry
 
 from compile_profile_inference_aihub import prepare_data
@@ -54,9 +55,13 @@ def inference(data):
     GROUNDING_DINO_CHECKPOINT_PATH = "./lpcvc_track2_models/groundingdino_swint_ogc.pth"
     grounding_dino_model = GroundingDino(model_config_path=GROUNDING_DINO_CONFIG_PATH, model_checkpoint_path=GROUNDING_DINO_CHECKPOINT_PATH)
 
-    SAM_ENCODER_VERSION = "vit_b"
-    SAM_CHECKPOINT_PATH = "./lpcvc_track2_models/sam_vit_b_01ec64.pth"
-    sam_model = sam_model_registry[SAM_ENCODER_VERSION](checkpoint=SAM_CHECKPOINT_PATH)
+    # SAM_ENCODER_VERSION = "vit_b"
+    # SAM_CHECKPOINT_PATH = "./lpcvc_track2_models/sam_vit_b_01ec64.pth"
+    # sam_model = sam_model_registry[SAM_ENCODER_VERSION](checkpoint=SAM_CHECKPOINT_PATH)
+
+    SAM_CONFIG_PATH = "configs/sam2.1/sam2.1_hiera_l.yaml"
+    SAM_CHECKPOINT_PATH = "./lpcvc_track2_models/sam2.1_hiera_large.pt"
+    sam_model = build_sam2(SAM_CONFIG_PATH, SAM_CHECKPOINT_PATH)
 
     model = GroundedSAM(grounding_dino_model, sam_model)
 
