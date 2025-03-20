@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional
 
 import numpy as np
+import torch
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from segment_anything import sam_model_registry
@@ -68,6 +69,7 @@ def inference(data):
     images_path = output_path / 'images'
     numpy_path.mkdir(parents=True, exist_ok=True)
     images_path.mkdir(parents=True, exist_ok=True)
+    device = torch.device("cpu")
     # providers = ["CPUExecutionProvider"]
 
     # session = onnxruntime.InferenceSession(
@@ -89,6 +91,8 @@ def inference(data):
     for d in tqdm(data):
         unique_fp = f"{d['image_name'].replace(' ', '_')}_{d['annotation_id']}_{d['text'].replace(' ', '_')}"
         image_save_dir = Path('./compile_and_profile') / 'annotated' / unique_fp
+        d["image_input"] = d["image_input"].to(device)  # Move inputs to same device
+        d["text_input"] = d["text_input"].to(device)
         output = model(d['image_input'], d['text_input'], image_save_dir)
         # save output
         np.save(numpy_path / f"{unique_fp}.npy", output)
