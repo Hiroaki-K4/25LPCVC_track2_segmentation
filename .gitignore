@@ -12,3 +12,4 @@ model.bin
 model_state_dict.pt
 
 GroundingDINO/
+*.onnx
