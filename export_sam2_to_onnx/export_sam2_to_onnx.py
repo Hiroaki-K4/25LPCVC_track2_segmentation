@@ -1,10 +1,11 @@
-from typing import Any, Optional, Tuple
+from typing import Any
 
 import torch
 import torch.nn.functional as F
+from torch import nn
+
 from sam2.build_sam import build_sam2
 from sam2.modeling.sam2_base import SAM2Base
-from torch import nn
 
 
 class SAM2ImageEncoder(nn.Module):
@@ -155,7 +156,7 @@ def export_encoder(model_type, sam2_model):
     torch.onnx.export(
         sam2_encoder,
         img,
-        f"{model_type}_encoder.onnx",
+        f"lpcvc_track2_models/{model_type}_encoder.onnx",
         export_params=True,
         opset_version=17,
         do_constant_folding=True,
@@ -208,7 +209,7 @@ def export_decoder(sam2_model, high_res_feats_0, high_res_feats_1, image_embed):
             has_mask_input,
             orig_im_size,
         ),
-        "decoder.onnx",
+        "lpcvc_track2_models/decoder.onnx",
         export_params=True,
         opset_version=16,
         do_constant_folding=True,
