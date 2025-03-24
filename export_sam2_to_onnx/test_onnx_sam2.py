@@ -1,7 +1,7 @@
 import cv2
 from imread_from_url import imread_from_url
 
-from sam2 import SAM2Image, draw_masks
+from sam2_onnx import SAM2Image, draw_masks
 
 
 def main():
